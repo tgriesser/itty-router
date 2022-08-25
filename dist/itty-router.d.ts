@@ -113,6 +113,14 @@ export interface IttyRouterTypeConfig {
   };
 }
 
+export declare type Router<
+  TypeConfig extends IttyRouterTypeConfig = TypeConfig
+> = IttyRouterApi<
+  Exclude<TypeConfig["handlerArgs"], undefined>,
+  Exclude<TypeConfig["handlerReturn"], undefined>
+> &
+  Exclude<TypeConfig["methodExtension"], undefined>;
+
 /**
  * Creates an "itty-router"
  *
@@ -130,11 +138,7 @@ export interface IttyRouterTypeConfig {
  */
 export declare function Router<TypeConfig extends IttyRouterTypeConfig>(
   ittyConfig?: IttyRouterConfig
-): IttyRouterApi<
-  Exclude<TypeConfig["handlerArgs"], undefined>,
-  Exclude<TypeConfig["handlerReturn"], undefined>
-> &
-  Exclude<TypeConfig["methodExtension"], undefined>;
+): Router<TypeConfig>;
 
 declare const _default: {
   Router: typeof Router;
