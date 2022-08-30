@@ -101,7 +101,7 @@ export declare type IttyRouterDefinition = [
 export interface IttyRouterConfig {
   base?: string;
   routes?: IttyRouterDefinition[];
-  onResponse?: (req: Request, res: unknown) => Response
+  onResponse?: <Req extends IttyGenericRequest = Request>(req: Req, res: unknown) => Response
 }
 
 export interface IttyRouterTypeConfig {
