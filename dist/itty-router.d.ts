@@ -28,6 +28,7 @@ export interface IttyGenericRequest {
   method: string;
   query?: Record<string, string>;
   params?: Record<string, string>;
+  matched?: string
 }
 
 // Extend the generic Request interface, with any narrowed properties that we've
@@ -40,6 +41,7 @@ export declare type IttyRequest<
   method: Method;
   params: InferParams<Path>;
   query: Record<string, string>;
+  matched: Path
 };
 
 export declare type IttyRequestHandler<
@@ -90,14 +92,16 @@ export interface IttyRouterApi<
 }
 
 export declare type IttyRouterDefinition = [
-  string,
-  RegExp,
-  IttyRequestHandler<any, any>[]
+  method: string,
+  regex: RegExp,
+  handler: IttyRequestHandler<any, any>[],
+  matched?: string
 ];
 
 export interface IttyRouterConfig {
   base?: string;
   routes?: IttyRouterDefinition[];
+  onResponse?: (req: Request, res: unknown) => Response
 }
 
 export interface IttyRouterTypeConfig {

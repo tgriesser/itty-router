@@ -1,4 +1,4 @@
-export function Router({ base = '', routes = [] } = {}) {
+export function Router({ base = '', routes = [], onResponse } = {}) {
   return {
     __proto__: new Proxy({}, {
       get: (target, prop, receiver) => (route, ...handlers) =>
@@ -12,17 +12,21 @@ export function Router({ base = '', routes = [] } = {}) {
             .replace(/\)\.\?\(([^\[]+)\[\^/g, '?)\\.?($1(?<=\\.)[^\\.')
           }/*$`),
           handlers,
+          base + route
         ]) && receiver
     }),
     routes,
     async handle (request, ...args) {
       let response, match, url = new URL(request.url)
       request.query = Object.fromEntries(url.searchParams)
-      for (let [method, route, handlers] of routes) {
+      for (let [method, route, handlers, matched] of routes) {
         if ((method === request.method || method === 'ALL') && (match = url.pathname.match(route))) {
           request.params = match.groups
+          request.matched = matched
           for (let handler of handlers) {
-            if ((response = await handler(request.proxy || request, ...args)) !== undefined) return response
+            if ((response = await handler(request.proxy || request, ...args)) !== undefined) return onResponse
+              ? onResponse(request, response)
+              : response
           }
         }
       }
