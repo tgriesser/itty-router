@@ -85,6 +85,7 @@ export interface IttyRouterApi<
   HandlerReturn extends any
 > extends IHTTPMethods<HandlerArgs, HandlerReturn> {
   all: IttyMethodHandler<string, HandlerArgs>;
+  routes: IttyRouterDefinition[]
   handle: (
     req: IttyGenericRequest,
     ...args: HandlerArgs
