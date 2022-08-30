@@ -22,7 +22,7 @@ function Router({ base = '', routes = [], onResponse } = {}) {
       for (let [method, route, handlers, matched] of routes) {
         if ((method === request.method || method === 'ALL') && (match = url.pathname.match(route))) {
           request.params = match.groups
-          request.matched = matched
+          request.matched = matched || ''
           for (let handler of handlers) {
             if ((response = await handler(request.proxy || request, ...args)) !== undefined) return onResponse
               ? onResponse(request, response)
